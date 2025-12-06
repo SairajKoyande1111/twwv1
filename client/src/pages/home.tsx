@@ -693,7 +693,7 @@ export default function Home() {
 
             {/* Right Column - Images and Reviews - Shifted right */}
             <motion.div 
-              className="space-y-3 hero-visuals lg:ml-16 xl:ml-24"
+              className="space-y-3 hero-visuals lg:ml-20 xl:ml-32"
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
