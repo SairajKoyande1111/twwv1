@@ -664,14 +664,14 @@ export default function Home() {
 
               {/* CTAs - Always row layout */}
               <motion.div 
-                className="flex flex-row gap-2 sm:gap-3 items-center justify-center lg:justify-start pt-2 flex-wrap"
+                className="flex flex-row gap-2 sm:gap-3 lg:gap-4 items-center justify-center lg:justify-start pt-2 flex-wrap"
                 variants={fadeInUp}
               >
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
                   <Button 
                     onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })} 
                     size="sm"
-                    className="rounded-full px-4 sm:px-6 transition-all bg-primary hover:bg-primary/90 font-semibold text-xs sm:text-sm text-white shadow-xl shadow-primary/30"
+                    className="rounded-full px-4 sm:px-6 lg:px-8 lg:py-6 transition-all bg-primary hover:bg-primary/90 font-semibold text-xs sm:text-sm lg:text-base text-white shadow-xl shadow-primary/30"
                     data-testid="button-start-journey"
                   >
                     Start Your Journey
@@ -681,7 +681,7 @@ export default function Home() {
                   <Button 
                     variant="outline" 
                     size="sm"
-                    className="rounded-full px-4 sm:px-6 border-2 border-white/80 bg-white/10 hover:bg-white/20 backdrop-blur-md hover:border-white transition-all font-semibold text-xs sm:text-sm text-white shadow-xl"
+                    className="rounded-full px-4 sm:px-6 lg:px-8 lg:py-6 border-2 border-white/80 bg-white/10 hover:bg-white/20 backdrop-blur-md hover:border-white transition-all font-semibold text-xs sm:text-sm lg:text-base text-white shadow-xl"
                     onClick={openWhatsApp}
                     data-testid="button-book-consultation"
                   >
