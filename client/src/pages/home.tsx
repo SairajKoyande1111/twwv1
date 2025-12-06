@@ -181,7 +181,7 @@ function TestimonialMobileCarousel({ testimonials }: TestimonialMobileCarouselPr
 }
 
 // Hero Transformation Slider - Full images with crossfade, no background
-function HeroTransformationSlider({ showDots = true }: { showDots?: boolean }) {
+function HeroTransformationSlider({ showDots = true, imageHeight = "h-[280px] sm:h-[320px] lg:h-[300px]" }: { showDots?: boolean; imageHeight?: string }) {
   const transformImages = [transform1, transform2, transform3, transform4, transform5, transform6, transform7, transform8];
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -194,7 +194,7 @@ function HeroTransformationSlider({ showDots = true }: { showDots?: boolean }) {
 
   return (
     <div 
-      className="relative h-[280px] sm:h-[320px] lg:h-[300px] rounded-xl overflow-hidden"
+      className={`relative ${imageHeight} rounded-xl overflow-hidden`}
       data-testid="hero-transformation-carousel"
     >
       {transformImages.map((img, index) => (
@@ -229,7 +229,7 @@ function HeroTransformationSlider({ showDots = true }: { showDots?: boolean }) {
 }
 
 // Hero Testimonial Slider - Full display with crossfade
-function HeroTestimonialSlider({ testimonials, maxDots = 5 }: { testimonials: typeof import("@/data/testimonials").testimonials; maxDots?: number }) {
+function HeroTestimonialSlider({ testimonials, showDots = true, compact = false }: { testimonials: typeof import("@/data/testimonials").testimonials; showDots?: boolean; compact?: boolean }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -238,9 +238,6 @@ function HeroTestimonialSlider({ testimonials, maxDots = 5 }: { testimonials: ty
     }, 4000);
     return () => clearInterval(interval);
   }, [testimonials.length]);
-
-  // Calculate which dots to show (centered around current index)
-  const dotsToShow = Math.min(maxDots, testimonials.length);
 
   return (
     <div className="relative" data-testid="hero-testimonial-slider">
@@ -252,52 +249,48 @@ function HeroTestimonialSlider({ testimonials, maxDots = 5 }: { testimonials: ty
           }`}
         >
           <div 
-            className="bg-white rounded-xl p-4 sm:p-5 shadow-lg border border-primary/20"
+            className={`bg-white rounded-xl shadow-lg border border-primary/20 ${compact ? 'p-3 sm:p-4' : 'p-4 sm:p-5'}`}
             data-testid={`hero-testimonial-card-${index}`}
           >
-            <div className="flex items-start gap-3">
+            <div className="flex items-start gap-2 sm:gap-3">
               <img
                 src={testimonial.image}
                 alt={testimonial.name}
-                className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-primary flex-shrink-0"
+                className={`rounded-full object-cover border-2 border-primary flex-shrink-0 ${compact ? 'w-10 h-10 sm:w-12 sm:h-12' : 'w-12 h-12 sm:w-14 sm:h-14'}`}
               />
               <div className="flex-1 min-w-0">
-                <h4 className="font-bold text-foreground text-sm sm:text-base" data-testid="text-testimonial-name">{testimonial.name}</h4>
-                <p className="text-primary text-xs sm:text-sm font-semibold" data-testid="text-testimonial-role">{testimonial.role}</p>
+                <h4 className={`font-bold text-foreground ${compact ? 'text-xs sm:text-sm' : 'text-sm sm:text-base'}`} data-testid="text-testimonial-name">{testimonial.name}</h4>
+                <p className={`text-primary font-semibold ${compact ? 'text-[10px] sm:text-xs' : 'text-xs sm:text-sm'}`} data-testid="text-testimonial-role">{testimonial.role}</p>
               </div>
             </div>
-            <p className="text-muted-foreground text-xs sm:text-sm mt-3 sm:mt-4 leading-relaxed line-clamp-3" data-testid="text-testimonial-review">
+            <p className={`text-muted-foreground leading-relaxed line-clamp-2 ${compact ? 'text-[11px] sm:text-xs mt-2' : 'text-xs sm:text-sm mt-3 sm:mt-4'}`} data-testid="text-testimonial-review">
               "{testimonial.review}"
             </p>
-            <div className="flex items-center gap-0.5 mt-2 sm:mt-3" data-testid="stars-testimonial-rating">
+            <div className={`flex items-center gap-0.5 ${compact ? 'mt-1.5' : 'mt-2 sm:mt-3'}`} data-testid="stars-testimonial-rating">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className="h-3 w-3 sm:h-4 sm:w-4 fill-primary text-primary" />
+                <Star key={i} className={`fill-primary text-primary ${compact ? 'h-3 w-3' : 'h-3 w-3 sm:h-4 sm:w-4'}`} />
               ))}
             </div>
           </div>
         </div>
       ))}
-      {/* Limited Dots Indicator */}
-      <div className="flex justify-center gap-1.5 mt-3">
-        {Array.from({ length: dotsToShow }).map((_, dotIndex) => {
-          const testimonialIndex = dotIndex;
-          const isActive = currentIndex === testimonialIndex || 
-            (currentIndex >= dotsToShow && dotIndex === dotsToShow - 1);
-          return (
+      {showDots && (
+        <div className="flex justify-center gap-1.5 mt-3">
+          {testimonials.slice(0, 5).map((_, dotIndex) => (
             <button
               key={dotIndex}
-              onClick={() => setCurrentIndex(testimonialIndex)}
+              onClick={() => setCurrentIndex(dotIndex)}
               className={`rounded-full transition-all duration-300 ${
-                currentIndex === testimonialIndex
+                currentIndex === dotIndex
                   ? 'w-6 h-2 bg-primary' 
                   : 'w-2 h-2 bg-white/50 hover:bg-white/70'
               }`}
-              aria-label={`View testimonial ${testimonialIndex + 1}`}
+              aria-label={`View testimonial ${dotIndex + 1}`}
               data-testid={`button-hero-testimonial-dot-${dotIndex}`}
             />
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -636,8 +629,8 @@ export default function Home() {
         </div>
         
         {/* Content - Two Column Layout */}
-        <div className="container relative z-10 px-4 md:px-6 lg:px-8 py-8 md:py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center max-w-7xl mx-auto">
+        <div className="container relative z-10 px-4 md:px-6 lg:px-12 xl:px-16 py-8 md:py-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 xl:gap-16 items-center w-full max-w-[1400px] mx-auto">
             
             {/* Left Column - Text Content */}
             <motion.div 
@@ -669,16 +662,16 @@ export default function Home() {
                 Personalized workouts, guidance & accountability built for your lifestyle.
               </motion.p>
 
-              {/* CTAs */}
+              {/* CTAs - Always row layout */}
               <motion.div 
-                className="flex flex-col sm:flex-row gap-3 items-center justify-center lg:justify-start pt-2"
+                className="flex flex-row gap-2 sm:gap-3 items-center justify-center lg:justify-start pt-2 flex-wrap"
                 variants={fadeInUp}
               >
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
                   <Button 
                     onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })} 
-                    size="default"
-                    className="rounded-full px-6 transition-all bg-primary hover:bg-primary/90 font-semibold text-sm text-white shadow-xl shadow-primary/30"
+                    size="sm"
+                    className="rounded-full px-4 sm:px-6 transition-all bg-primary hover:bg-primary/90 font-semibold text-xs sm:text-sm text-white shadow-xl shadow-primary/30"
                     data-testid="button-start-journey"
                   >
                     Start Your Journey
@@ -687,8 +680,8 @@ export default function Home() {
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
                   <Button 
                     variant="outline" 
-                    size="default"
-                    className="rounded-full px-6 border-2 border-white/80 bg-white/10 hover:bg-white/20 backdrop-blur-md hover:border-white transition-all font-semibold text-sm text-white shadow-xl"
+                    size="sm"
+                    className="rounded-full px-4 sm:px-6 border-2 border-white/80 bg-white/10 hover:bg-white/20 backdrop-blur-md hover:border-white transition-all font-semibold text-xs sm:text-sm text-white shadow-xl"
                     onClick={openWhatsApp}
                     data-testid="button-book-consultation"
                   >
@@ -700,17 +693,17 @@ export default function Home() {
 
             {/* Right Column - Images and Reviews */}
             <motion.div 
-              className="space-y-4 hero-visuals"
+              className="space-y-3 hero-visuals"
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
               data-testid="hero-visuals-container"
             >
-              {/* Transformation Images - No background, just images */}
-              <HeroTransformationSlider showDots={false} />
+              {/* Transformation Images - Larger size */}
+              <HeroTransformationSlider showDots={false} imageHeight="h-[320px] sm:h-[380px] lg:h-[340px] xl:h-[380px]" />
 
-              {/* Reviews below images */}
-              <HeroTestimonialSlider testimonials={testimonials} maxDots={5} />
+              {/* Reviews below images - Compact */}
+              <HeroTestimonialSlider testimonials={testimonials} showDots={false} compact={true} />
             </motion.div>
           </div>
         </div>
