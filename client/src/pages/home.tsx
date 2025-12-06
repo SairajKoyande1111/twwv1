@@ -709,6 +709,281 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Pricing Packages - Redesigned */}
+      <AnimatedSection variant="slideInLeft">
+        <section className="min-h-screen bg-primary/5 flex items-center justify-center relative overflow-hidden pt-6 pb-12 md:pb-16 lg:pb-20 border-t border-primary/10" id="pricing">
+        <div className="w-full px-3 md:px-4 lg:px-6 max-w-7xl mx-auto">
+          <div className="text-center mb-8 md:mb-10 lg:mb-12">
+            <motion.h2 
+              className="font-heading text-3xl md:text-4xl lg:text-5xl font-extrabold mb-3 tracking-tight text-foreground"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              Transform Your Life <span className="text-primary">Today</span>
+            </motion.h2>
+            <motion.p 
+              className="text-sm md:text-base lg:text-lg text-muted-foreground mx-auto font-bold px-4 md:whitespace-nowrap"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              Choose the perfect plan that fits your lifestyle and commit to your wellness journey
+            </motion.p>
+          </div>
+          <div className="hidden md:grid md:grid-cols-4 gap-4 lg:gap-6 items-start max-w-[1400px] mx-auto">
+            {[
+              {
+                name: "Fit Basics",
+                duration: "4 Weeks",
+                classes: "",
+                price: "₹2,500",
+                pricePerClass: "",
+                description: "For those who prefer to train on their own.",
+                features: [
+                  "Personalized Diet Plan",
+                  "Weekly Diet Adjustments",
+                  "Home/Gym Workout Plan (4-week progression)",
+                  "Access to Recorded Group Sessions",
+                  "Weekly Progress Tracking Form",
+                  "WhatsApp Support (within working hours)"
+                ]
+              },
+              {
+                name: "Fit Plus",
+                duration: "4 Weeks",
+                classes: "Main Group Program",
+                price: "₹5,000",
+                pricePerClass: "",
+                description: "Live coaching for structure, accountability & discipline.",
+                features: [
+                  "Live Group Training Sessions",
+                  "Personalized Diet Plan",
+                  "Weekly Progress Review",
+                  "Form & Technique Guidance",
+                  "Group Community Support"
+                ],
+                featured: true,
+                badge: "Popular"
+              },
+              {
+                name: "Pro Transformation Program",
+                duration: "4 Weeks",
+                classes: "",
+                price: "₹7,500",
+                pricePerClass: "",
+                description: "For faster and controlled transformation.",
+                features: [
+                  "Everything in Fit Plus",
+                  "Weekly 1:1 Progress Call (10–15 mins)",
+                  "Habit & Routine Planning",
+                  "Behavioral Accountability"
+                ]
+              },
+              {
+                name: "Elite Athlete / Fast Result Program",
+                duration: "4 Weeks",
+                classes: "",
+                price: "₹10,000",
+                pricePerClass: "",
+                description: "Designed for athletes & highly committed individuals.",
+                features: [
+                  "Everything in Pro",
+                  "Performance Tracking (Strength / Endurance / Agility)",
+                  "Technique Video Feedback",
+                  "Priority WhatsApp Support"
+                ]
+              },
+            ].map((pkg, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="flex"
+              >
+                <Card className={`group flex flex-col w-full p-6 md:p-7 min-h-[650px] transition-all duration-300 bg-card border-2 ${pkg.featured ? 'border-primary shadow-2xl shadow-primary/20' : 'border-primary/40'} hover:border-primary hover:shadow-2xl hover:shadow-primary/30 hover:-translate-y-1 relative overflow-visible`}>
+                  {pkg.featured && (
+                    <>
+                      <div className="absolute -right-8 -top-8 w-24 h-24 bg-primary/10 rounded-full blur-2xl" />
+                      <div className="absolute -left-8 -bottom-8 w-24 h-24 bg-primary/5 rounded-full blur-2xl" />
+                    </>
+                  )}
+                  {pkg.badge && (
+                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
+                      <div className="inline-flex items-center gap-1.5 bg-primary text-white px-4 py-2 rounded-full text-xs font-bold w-fit">
+                        <Star className="h-3 w-3 fill-white" />
+                        {pkg.badge}
+                      </div>
+                    </div>
+                  )}
+                  <CardContent className="p-0 space-y-3 md:space-y-4 relative flex flex-col h-full">
+                    <div>
+                      <h3 className="font-heading text-xl md:text-2xl font-extrabold mb-1 text-black line-clamp-2 min-h-[3.5rem] flex items-start">
+                        {pkg.name}
+                      </h3>
+                      <p className="text-black/70 font-semibold text-sm mb-0.5">{pkg.duration}</p>
+                      <p className="text-black/60 text-xs italic line-clamp-2 min-h-[2.5rem]">{pkg.description}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="font-heading text-4xl md:text-4xl font-black text-black">
+                        {pkg.price}
+                      </div>
+                      {pkg.classes && (
+                        <span className="text-xs text-black/60 font-medium block">{pkg.classes}</span>
+                      )}
+                    </div>
+                    <div className="h-px bg-black/10" />
+                    <ul className="grid grid-cols-1 gap-2 flex-1">
+                      {pkg.features.map((feature, j) => (
+                        <li key={j} className="flex items-start gap-2 group/item">
+                          <div className="h-4 w-4 rounded-full bg-primary flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <CheckCircle2 className="h-2.5 w-2.5 text-white" />
+                          </div>
+                          <span className="text-xs md:text-sm text-muted-foreground leading-tight font-medium">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <Button 
+                      onClick={openWhatsApp} 
+                      className="w-full rounded-full py-5 md:py-5 text-sm font-bold transition-all duration-300 bg-primary hover:bg-primary/90 text-white mt-auto"
+                      data-testid={`button-select-${pkg.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    >
+                      Start {pkg.name.split(' ')[0]} Plan
+                    </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+          
+          {/* Mobile View - Stacked Cards */}
+          <div className="md:hidden space-y-4">
+            {[
+              {
+                name: "Fit Basics",
+                duration: "4 Weeks",
+                classes: "",
+                price: "₹2,500",
+                pricePerClass: "",
+                description: "For those who prefer to train on their own.",
+                features: [
+                  "Personalized Diet Plan",
+                  "Weekly Diet Adjustments",
+                  "Home/Gym Workout Plan (4-week progression)",
+                  "Access to Recorded Group Sessions",
+                  "Weekly Progress Tracking Form",
+                  "WhatsApp Support (within working hours)"
+                ]
+              },
+              {
+                name: "Fit Plus",
+                duration: "4 Weeks",
+                classes: "Main Group Program",
+                price: "₹5,000",
+                pricePerClass: "",
+                description: "Live coaching for structure, accountability & discipline.",
+                features: [
+                  "Live Group Training Sessions",
+                  "Personalized Diet Plan",
+                  "Weekly Progress Review",
+                  "Form & Technique Guidance",
+                  "Group Community Support"
+                ],
+                featured: true,
+                badge: "Popular"
+              },
+              {
+                name: "Pro Transformation Program",
+                duration: "4 Weeks",
+                classes: "",
+                price: "₹7,500",
+                pricePerClass: "",
+                description: "For faster and controlled transformation.",
+                features: [
+                  "Everything in Fit Plus",
+                  "Weekly 1:1 Progress Call (10–15 mins)",
+                  "Habit & Routine Planning",
+                  "Behavioral Accountability"
+                ]
+              },
+              {
+                name: "Elite Athlete / Fast Result Program",
+                duration: "4 Weeks",
+                classes: "",
+                price: "₹10,000",
+                pricePerClass: "",
+                description: "Designed for athletes & highly committed individuals.",
+                features: [
+                  "Everything in Pro",
+                  "Performance Tracking (Strength / Endurance / Agility)",
+                  "Technique Video Feedback",
+                  "Priority WhatsApp Support"
+                ]
+              },
+            ].map((pkg, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+              >
+                <Card className="group p-5 transition-all duration-500 bg-card border-2 border-primary/40 hover:border-primary shadow-xl hover:shadow-2xl hover:shadow-primary/30 hover:-translate-y-1 relative overflow-hidden">
+                  <CardContent className="p-0 space-y-3 relative">
+                    {pkg.badge && (
+                      <div className="inline-flex items-center gap-1.5 bg-primary text-white px-3 py-1.5 rounded-full text-xs font-bold">
+                        <Star className="h-3 w-3 fill-white" />
+                        {pkg.badge}
+                      </div>
+                    )}
+                    <div>
+                      <h3 className="font-heading text-2xl font-extrabold mb-1 text-black">
+                        {pkg.name}
+                      </h3>
+                      <p className="text-black/70 font-semibold text-sm mb-0.5">{pkg.duration}</p>
+                      <p className="text-black/60 text-xs italic">{pkg.description}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="font-heading text-3xl font-black text-black">
+                        {pkg.price}
+                      </div>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-xs text-black/60 font-medium">{pkg.classes}</span>
+                        <span className="text-xs text-black/40">•</span>
+                        <span className="text-xs font-bold text-black/80">{pkg.pricePerClass}</span>
+                      </div>
+                    </div>
+                    <div className="h-px bg-black/10" />
+                    <ul className="grid grid-cols-1 gap-2">
+                      {pkg.features.map((feature, j) => (
+                        <li key={j} className="flex items-start gap-2 group/item">
+                          <div className="h-4 w-4 rounded-full bg-primary flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <CheckCircle2 className="h-2.5 w-2.5 text-white" />
+                          </div>
+                          <span className="text-sm text-muted-foreground leading-tight font-medium">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <Button 
+                      onClick={openWhatsApp} 
+                      className="w-full rounded-full py-5 text-sm font-bold transition-all duration-300 bg-primary hover:bg-primary/90 text-white"
+                      data-testid={`button-select-${pkg.name.toLowerCase().replace(' ', '-')}`}
+                    >
+                      Start {pkg.name} Plan
+                    </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+        </section>
+      </AnimatedSection>
+
       {/* About House of Champions */}
       <AnimatedSection variant="fadeIn">
         <section className="py-12 md:py-16 lg:py-20 bg-card relative overflow-hidden border-t border-primary/10" id="about">
@@ -1329,281 +1604,6 @@ export default function Home() {
 
       {/* Marketing Offer Pricing Section */}
       <PricingSection />
-
-      {/* Pricing Packages - Redesigned */}
-      <AnimatedSection variant="slideInLeft">
-        <section className="min-h-screen bg-primary/5 flex items-center justify-center relative overflow-hidden pt-6 pb-12 md:pb-16 lg:pb-20 border-t border-primary/10" id="pricing">
-        <div className="w-full px-3 md:px-4 lg:px-6 max-w-7xl mx-auto">
-          <div className="text-center mb-8 md:mb-10 lg:mb-12">
-            <motion.h2 
-              className="font-heading text-3xl md:text-4xl lg:text-5xl font-extrabold mb-3 tracking-tight text-foreground"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              Transform Your Life <span className="text-primary">Today</span>
-            </motion.h2>
-            <motion.p 
-              className="text-sm md:text-base lg:text-lg text-muted-foreground mx-auto font-bold px-4 md:whitespace-nowrap"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
-              Choose the perfect plan that fits your lifestyle and commit to your wellness journey
-            </motion.p>
-          </div>
-          <div className="hidden md:grid md:grid-cols-4 gap-4 lg:gap-6 items-start max-w-[1400px] mx-auto">
-            {[
-              {
-                name: "Fit Basics",
-                duration: "4 Weeks",
-                classes: "",
-                price: "₹2,500",
-                pricePerClass: "",
-                description: "For those who prefer to train on their own.",
-                features: [
-                  "Personalized Diet Plan",
-                  "Weekly Diet Adjustments",
-                  "Home/Gym Workout Plan (4-week progression)",
-                  "Access to Recorded Group Sessions",
-                  "Weekly Progress Tracking Form",
-                  "WhatsApp Support (within working hours)"
-                ]
-              },
-              {
-                name: "Fit Plus",
-                duration: "4 Weeks",
-                classes: "Main Group Program",
-                price: "₹5,000",
-                pricePerClass: "",
-                description: "Live coaching for structure, accountability & discipline.",
-                features: [
-                  "Live Group Training Sessions",
-                  "Personalized Diet Plan",
-                  "Weekly Progress Review",
-                  "Form & Technique Guidance",
-                  "Group Community Support"
-                ],
-                featured: true,
-                badge: "Popular"
-              },
-              {
-                name: "Pro Transformation Program",
-                duration: "4 Weeks",
-                classes: "",
-                price: "₹7,500",
-                pricePerClass: "",
-                description: "For faster and controlled transformation.",
-                features: [
-                  "Everything in Fit Plus",
-                  "Weekly 1:1 Progress Call (10–15 mins)",
-                  "Habit & Routine Planning",
-                  "Behavioral Accountability"
-                ]
-              },
-              {
-                name: "Elite Athlete / Fast Result Program",
-                duration: "4 Weeks",
-                classes: "",
-                price: "₹10,000",
-                pricePerClass: "",
-                description: "Designed for athletes & highly committed individuals.",
-                features: [
-                  "Everything in Pro",
-                  "Performance Tracking (Strength / Endurance / Agility)",
-                  "Technique Video Feedback",
-                  "Priority WhatsApp Support"
-                ]
-              },
-            ].map((pkg, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="flex"
-              >
-                <Card className={`group flex flex-col w-full p-6 md:p-7 min-h-[650px] transition-all duration-300 bg-card border-2 ${pkg.featured ? 'border-primary shadow-2xl shadow-primary/20' : 'border-primary/40'} hover:border-primary hover:shadow-2xl hover:shadow-primary/30 hover:-translate-y-1 relative overflow-visible`}>
-                  {pkg.featured && (
-                    <>
-                      <div className="absolute -right-8 -top-8 w-24 h-24 bg-primary/10 rounded-full blur-2xl" />
-                      <div className="absolute -left-8 -bottom-8 w-24 h-24 bg-primary/5 rounded-full blur-2xl" />
-                    </>
-                  )}
-                  {pkg.badge && (
-                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
-                      <div className="inline-flex items-center gap-1.5 bg-primary text-white px-4 py-2 rounded-full text-xs font-bold w-fit">
-                        <Star className="h-3 w-3 fill-white" />
-                        {pkg.badge}
-                      </div>
-                    </div>
-                  )}
-                  <CardContent className="p-0 space-y-3 md:space-y-4 relative flex flex-col h-full">
-                    <div>
-                      <h3 className="font-heading text-xl md:text-2xl font-extrabold mb-1 text-black line-clamp-2 min-h-[3.5rem] flex items-start">
-                        {pkg.name}
-                      </h3>
-                      <p className="text-black/70 font-semibold text-sm mb-0.5">{pkg.duration}</p>
-                      <p className="text-black/60 text-xs italic line-clamp-2 min-h-[2.5rem]">{pkg.description}</p>
-                    </div>
-                    <div className="space-y-1">
-                      <div className="font-heading text-4xl md:text-4xl font-black text-black">
-                        {pkg.price}
-                      </div>
-                      {pkg.classes && (
-                        <span className="text-xs text-black/60 font-medium block">{pkg.classes}</span>
-                      )}
-                    </div>
-                    <div className="h-px bg-black/10" />
-                    <ul className="grid grid-cols-1 gap-2 flex-1">
-                      {pkg.features.map((feature, j) => (
-                        <li key={j} className="flex items-start gap-2 group/item">
-                          <div className="h-4 w-4 rounded-full bg-primary flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <CheckCircle2 className="h-2.5 w-2.5 text-white" />
-                          </div>
-                          <span className="text-xs md:text-sm text-muted-foreground leading-tight font-medium">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <Button 
-                      onClick={openWhatsApp} 
-                      className="w-full rounded-full py-5 md:py-5 text-sm font-bold transition-all duration-300 bg-primary hover:bg-primary/90 text-white mt-auto"
-                      data-testid={`button-select-${pkg.name.toLowerCase().replace(/\s+/g, '-')}`}
-                    >
-                      Start {pkg.name.split(' ')[0]} Plan
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-          
-          {/* Mobile View - Stacked Cards */}
-          <div className="md:hidden space-y-4">
-            {[
-              {
-                name: "Fit Basics",
-                duration: "4 Weeks",
-                classes: "",
-                price: "₹2,500",
-                pricePerClass: "",
-                description: "For those who prefer to train on their own.",
-                features: [
-                  "Personalized Diet Plan",
-                  "Weekly Diet Adjustments",
-                  "Home/Gym Workout Plan (4-week progression)",
-                  "Access to Recorded Group Sessions",
-                  "Weekly Progress Tracking Form",
-                  "WhatsApp Support (within working hours)"
-                ]
-              },
-              {
-                name: "Fit Plus",
-                duration: "4 Weeks",
-                classes: "Main Group Program",
-                price: "₹5,000",
-                pricePerClass: "",
-                description: "Live coaching for structure, accountability & discipline.",
-                features: [
-                  "Live Group Training Sessions",
-                  "Personalized Diet Plan",
-                  "Weekly Progress Review",
-                  "Form & Technique Guidance",
-                  "Group Community Support"
-                ],
-                featured: true,
-                badge: "Popular"
-              },
-              {
-                name: "Pro Transformation Program",
-                duration: "4 Weeks",
-                classes: "",
-                price: "₹7,500",
-                pricePerClass: "",
-                description: "For faster and controlled transformation.",
-                features: [
-                  "Everything in Fit Plus",
-                  "Weekly 1:1 Progress Call (10–15 mins)",
-                  "Habit & Routine Planning",
-                  "Behavioral Accountability"
-                ]
-              },
-              {
-                name: "Elite Athlete / Fast Result Program",
-                duration: "4 Weeks",
-                classes: "",
-                price: "₹10,000",
-                pricePerClass: "",
-                description: "Designed for athletes & highly committed individuals.",
-                features: [
-                  "Everything in Pro",
-                  "Performance Tracking (Strength / Endurance / Agility)",
-                  "Technique Video Feedback",
-                  "Priority WhatsApp Support"
-                ]
-              },
-            ].map((pkg, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-              >
-                <Card className="group p-5 transition-all duration-500 bg-card border-2 border-primary/40 hover:border-primary shadow-xl hover:shadow-2xl hover:shadow-primary/30 hover:-translate-y-1 relative overflow-hidden">
-                  <CardContent className="p-0 space-y-3 relative">
-                    {pkg.badge && (
-                      <div className="inline-flex items-center gap-1.5 bg-primary text-white px-3 py-1.5 rounded-full text-xs font-bold">
-                        <Star className="h-3 w-3 fill-white" />
-                        {pkg.badge}
-                      </div>
-                    )}
-                    <div>
-                      <h3 className="font-heading text-2xl font-extrabold mb-1 text-black">
-                        {pkg.name}
-                      </h3>
-                      <p className="text-black/70 font-semibold text-sm mb-0.5">{pkg.duration}</p>
-                      <p className="text-black/60 text-xs italic">{pkg.description}</p>
-                    </div>
-                    <div className="space-y-1">
-                      <div className="font-heading text-3xl font-black text-black">
-                        {pkg.price}
-                      </div>
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-xs text-black/60 font-medium">{pkg.classes}</span>
-                        <span className="text-xs text-black/40">•</span>
-                        <span className="text-xs font-bold text-black/80">{pkg.pricePerClass}</span>
-                      </div>
-                    </div>
-                    <div className="h-px bg-black/10" />
-                    <ul className="grid grid-cols-1 gap-2">
-                      {pkg.features.map((feature, j) => (
-                        <li key={j} className="flex items-start gap-2 group/item">
-                          <div className="h-4 w-4 rounded-full bg-primary flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <CheckCircle2 className="h-2.5 w-2.5 text-white" />
-                          </div>
-                          <span className="text-sm text-muted-foreground leading-tight font-medium">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <Button 
-                      onClick={openWhatsApp} 
-                      className="w-full rounded-full py-5 text-sm font-bold transition-all duration-300 bg-primary hover:bg-primary/90 text-white"
-                      data-testid={`button-select-${pkg.name.toLowerCase().replace(' ', '-')}`}
-                    >
-                      Start {pkg.name} Plan
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-        </section>
-      </AnimatedSection>
 
       {/* Meet Trainers - Redesigned */}
       <AnimatedSection variant="scaleIn">
