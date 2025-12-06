@@ -180,6 +180,119 @@ function TestimonialMobileCarousel({ testimonials }: TestimonialMobileCarouselPr
   );
 }
 
+// Hero Transformation Slider - Full images with crossfade
+function HeroTransformationSlider() {
+  const transformImages = [transform1, transform2, transform3, transform4, transform5, transform6, transform7, transform8];
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % transformImages.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [transformImages.length]);
+
+  return (
+    <div 
+      className="relative h-[320px] rounded-xl overflow-hidden border-2 border-primary/30"
+      data-testid="hero-transformation-carousel"
+    >
+      {transformImages.map((img, index) => (
+        <img 
+          key={index}
+          src={img} 
+          alt={`Transformation ${index + 1}`}
+          className={`absolute inset-0 w-full h-full object-contain bg-black/50 transition-opacity duration-700 ${
+            index === currentIndex ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+      ))}
+      {/* Dots Indicator */}
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+        {transformImages.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentIndex(index)}
+            className={`rounded-full transition-all duration-300 ${
+              index === currentIndex 
+                ? 'w-6 h-2 bg-primary' 
+                : 'w-2 h-2 bg-white/50 hover:bg-white/70'
+            }`}
+            aria-label={`View transformation ${index + 1}`}
+            data-testid={`button-transform-dot-${index}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Hero Testimonial Slider - Full display with crossfade
+function HeroTestimonialSlider({ testimonials }: { testimonials: typeof import("@/data/testimonials").testimonials }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [testimonials.length]);
+
+  return (
+    <div className="relative" data-testid="hero-testimonial-slider">
+      {testimonials.map((testimonial, index) => (
+        <div
+          key={index}
+          className={`transition-opacity duration-700 ${
+            index === currentIndex ? 'opacity-100 relative' : 'opacity-0 absolute inset-0'
+          }`}
+        >
+          <div 
+            className="bg-white rounded-xl p-5 shadow-lg border border-primary/20"
+            data-testid={`hero-testimonial-card-${index}`}
+          >
+            <div className="flex items-start gap-3">
+              <img
+                src={testimonial.image}
+                alt={testimonial.name}
+                className="w-14 h-14 rounded-full object-cover border-2 border-primary flex-shrink-0"
+              />
+              <div className="flex-1 min-w-0">
+                <h4 className="font-bold text-foreground text-base" data-testid="text-testimonial-name">{testimonial.name}</h4>
+                <p className="text-primary text-sm font-semibold" data-testid="text-testimonial-role">{testimonial.role}</p>
+              </div>
+            </div>
+            <p className="text-muted-foreground text-sm mt-4 leading-relaxed" data-testid="text-testimonial-review">
+              "{testimonial.review}"
+            </p>
+            <div className="flex items-center gap-0.5 mt-3" data-testid="stars-testimonial-rating">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="h-4 w-4 fill-primary text-primary" />
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
+      {/* Dots Indicator */}
+      <div className="flex justify-center gap-1.5 mt-3">
+        {testimonials.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentIndex(index)}
+            className={`rounded-full transition-all duration-300 ${
+              index === currentIndex 
+                ? 'w-6 h-2 bg-primary' 
+                : 'w-2 h-2 bg-muted-foreground/30 hover:bg-muted-foreground/50'
+            }`}
+            aria-label={`View testimonial ${index + 1}`}
+            data-testid={`button-hero-testimonial-dot-${index}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // Stats configuration - 3 counters only
 const STATS_DATA = [
   { value: 2000, label: "Clients Transformed", suffix: "+" },
@@ -513,13 +626,13 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/50"></div>
         </div>
         
-        {/* Content - Two Column Layout */}
+        {/* Content - Centered Layout */}
         <div className="container relative z-10 px-4 md:px-6 lg:px-8 py-8 md:py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center max-w-7xl mx-auto">
+          <div className="flex flex-col items-center max-w-7xl mx-auto">
             
-            {/* Left Column - Content */}
+            {/* Content - Centered */}
             <motion.div 
-              className="space-y-5 md:space-y-6 text-center lg:text-left"
+              className="space-y-5 md:space-y-6 text-center max-w-4xl"
               initial="hidden"
               animate="visible"
               variants={staggerContainer}
@@ -531,15 +644,15 @@ export default function Home() {
                 variants={fadeInUp}
                 data-testid="hero-headline"
               >
-                Transform Your Life With
-                <span className="block text-primary mt-1">
+                <span className="whitespace-nowrap">Transform Your Life With</span>
+                <span className="block text-primary mt-1 whitespace-nowrap">
                   Expert Online Coaching
                 </span>
               </motion.h1>
               
               {/* Subline */}
               <motion.p 
-                className="text-white/90 leading-relaxed font-medium max-w-lg mx-auto lg:mx-0" 
+                className="text-white/90 leading-relaxed font-medium max-w-lg mx-auto" 
                 style={{ fontSize: 'clamp(1rem, 2vw, 1.25rem)' }}
                 variants={fadeInUp}
                 data-testid="hero-subline"
@@ -549,7 +662,7 @@ export default function Home() {
 
               {/* CTAs */}
               <motion.div 
-                className="flex flex-col sm:flex-row gap-3 items-center lg:items-start justify-center lg:justify-start pt-2"
+                className="flex flex-col sm:flex-row gap-3 items-center justify-center pt-2"
                 variants={fadeInUp}
               >
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
@@ -574,74 +687,23 @@ export default function Home() {
                   </Button>
                 </motion.div>
               </motion.div>
-
-              {/* Founder's Quote */}
-              <motion.p 
-                className="text-primary font-semibold italic text-sm md:text-base max-w-md mx-auto lg:mx-0 pt-2"
-                variants={fadeInUp}
-                data-testid="hero-founder-message"
-              >
-                "Your transformation is our mission. Every rep, every session, every victory — we celebrate it all with you."
-              </motion.p>
             </motion.div>
 
-            {/* Right Column - Transformation Images & Testimonial (hidden on mobile) */}
+            {/* Transformation Images & Testimonial - Below content, centered (hidden on mobile) */}
             <motion.div 
-              className="space-y-4 hidden lg:block hero-visuals"
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
+              className="mt-10 w-full max-w-5xl hidden lg:block hero-visuals"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
               data-testid="hero-visuals-container"
             >
-              {/* Transformation Images Carousel */}
-              <div 
-                className="relative h-[280px] overflow-hidden rounded-xl"
-                data-testid="hero-transformation-carousel"
-              >
-                <div className="absolute inset-0 flex gap-3 animate-scroll-hero">
-                  {[transform1, transform2, transform3, transform4, transform5, transform6, transform7, transform8, transform1, transform2, transform3, transform4].map((img, index) => (
-                    <div 
-                      key={index}
-                      className="flex-shrink-0 w-36 h-full rounded-lg overflow-hidden border-2 border-primary/30"
-                    >
-                      <img 
-                        src={img} 
-                        alt={`Transformation ${(index % 8) + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <div className="grid grid-cols-2 gap-6 items-start">
+                {/* Transformation Images - Full images with crossfade */}
+                <HeroTransformationSlider />
 
-              {/* Featured Testimonial Card */}
-              <motion.div 
-                className="bg-white rounded-xl p-4 shadow-lg border border-primary/20"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                data-testid="hero-testimonial-card"
-              >
-                <div className="flex items-start gap-3">
-                  <img
-                    src={testimonials[1].image}
-                    alt={testimonials[1].name}
-                    className="w-12 h-12 rounded-full object-cover border-2 border-primary flex-shrink-0"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-bold text-foreground text-sm" data-testid="text-testimonial-name">{testimonials[1].name}</h4>
-                    <p className="text-primary text-xs font-semibold" data-testid="text-testimonial-role">{testimonials[1].role}</p>
-                  </div>
-                </div>
-                <p className="text-muted-foreground text-sm mt-3 leading-relaxed line-clamp-2" data-testid="text-testimonial-review">
-                  "{testimonials[1].review}"
-                </p>
-                <div className="flex items-center gap-0.5 mt-2" data-testid="stars-testimonial-rating">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-primary text-primary" />
-                  ))}
-                </div>
-              </motion.div>
+                {/* Featured Testimonial Card - Full display with crossfade */}
+                <HeroTestimonialSlider testimonials={testimonials} />
+              </div>
             </motion.div>
           </div>
         </div>
