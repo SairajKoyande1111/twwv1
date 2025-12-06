@@ -180,8 +180,8 @@ function TestimonialMobileCarousel({ testimonials }: TestimonialMobileCarouselPr
   );
 }
 
-// Hero Transformation Slider - Full images with crossfade
-function HeroTransformationSlider() {
+// Hero Transformation Slider - Full images with crossfade, no background
+function HeroTransformationSlider({ showDots = true }: { showDots?: boolean }) {
   const transformImages = [transform1, transform2, transform3, transform4, transform5, transform6, transform7, transform8];
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -194,7 +194,7 @@ function HeroTransformationSlider() {
 
   return (
     <div 
-      className="relative h-[320px] rounded-xl overflow-hidden border-2 border-primary/30"
+      className="relative h-[280px] sm:h-[320px] lg:h-[300px] rounded-xl overflow-hidden"
       data-testid="hero-transformation-carousel"
     >
       {transformImages.map((img, index) => (
@@ -202,33 +202,34 @@ function HeroTransformationSlider() {
           key={index}
           src={img} 
           alt={`Transformation ${index + 1}`}
-          className={`absolute inset-0 w-full h-full object-contain bg-black/50 transition-opacity duration-700 ${
+          className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ${
             index === currentIndex ? 'opacity-100' : 'opacity-0'
           }`}
         />
       ))}
-      {/* Dots Indicator */}
-      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-        {transformImages.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentIndex(index)}
-            className={`rounded-full transition-all duration-300 ${
-              index === currentIndex 
-                ? 'w-6 h-2 bg-primary' 
-                : 'w-2 h-2 bg-white/50 hover:bg-white/70'
-            }`}
-            aria-label={`View transformation ${index + 1}`}
-            data-testid={`button-transform-dot-${index}`}
-          />
-        ))}
-      </div>
+      {showDots && (
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+          {transformImages.slice(0, 5).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={`rounded-full transition-all duration-300 ${
+                index === currentIndex 
+                  ? 'w-6 h-2 bg-primary' 
+                  : 'w-2 h-2 bg-white/50 hover:bg-white/70'
+              }`}
+              aria-label={`View transformation ${index + 1}`}
+              data-testid={`button-transform-dot-${index}`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
 
 // Hero Testimonial Slider - Full display with crossfade
-function HeroTestimonialSlider({ testimonials }: { testimonials: typeof import("@/data/testimonials").testimonials }) {
+function HeroTestimonialSlider({ testimonials, maxDots = 5 }: { testimonials: typeof import("@/data/testimonials").testimonials; maxDots?: number }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -237,6 +238,9 @@ function HeroTestimonialSlider({ testimonials }: { testimonials: typeof import("
     }, 4000);
     return () => clearInterval(interval);
   }, [testimonials.length]);
+
+  // Calculate which dots to show (centered around current index)
+  const dotsToShow = Math.min(maxDots, testimonials.length);
 
   return (
     <div className="relative" data-testid="hero-testimonial-slider">
@@ -248,46 +252,51 @@ function HeroTestimonialSlider({ testimonials }: { testimonials: typeof import("
           }`}
         >
           <div 
-            className="bg-white rounded-xl p-5 shadow-lg border border-primary/20"
+            className="bg-white rounded-xl p-4 sm:p-5 shadow-lg border border-primary/20"
             data-testid={`hero-testimonial-card-${index}`}
           >
             <div className="flex items-start gap-3">
               <img
                 src={testimonial.image}
                 alt={testimonial.name}
-                className="w-14 h-14 rounded-full object-cover border-2 border-primary flex-shrink-0"
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-primary flex-shrink-0"
               />
               <div className="flex-1 min-w-0">
-                <h4 className="font-bold text-foreground text-base" data-testid="text-testimonial-name">{testimonial.name}</h4>
-                <p className="text-primary text-sm font-semibold" data-testid="text-testimonial-role">{testimonial.role}</p>
+                <h4 className="font-bold text-foreground text-sm sm:text-base" data-testid="text-testimonial-name">{testimonial.name}</h4>
+                <p className="text-primary text-xs sm:text-sm font-semibold" data-testid="text-testimonial-role">{testimonial.role}</p>
               </div>
             </div>
-            <p className="text-muted-foreground text-sm mt-4 leading-relaxed" data-testid="text-testimonial-review">
+            <p className="text-muted-foreground text-xs sm:text-sm mt-3 sm:mt-4 leading-relaxed line-clamp-3" data-testid="text-testimonial-review">
               "{testimonial.review}"
             </p>
-            <div className="flex items-center gap-0.5 mt-3" data-testid="stars-testimonial-rating">
+            <div className="flex items-center gap-0.5 mt-2 sm:mt-3" data-testid="stars-testimonial-rating">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className="h-4 w-4 fill-primary text-primary" />
+                <Star key={i} className="h-3 w-3 sm:h-4 sm:w-4 fill-primary text-primary" />
               ))}
             </div>
           </div>
         </div>
       ))}
-      {/* Dots Indicator */}
+      {/* Limited Dots Indicator */}
       <div className="flex justify-center gap-1.5 mt-3">
-        {testimonials.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentIndex(index)}
-            className={`rounded-full transition-all duration-300 ${
-              index === currentIndex 
-                ? 'w-6 h-2 bg-primary' 
-                : 'w-2 h-2 bg-muted-foreground/30 hover:bg-muted-foreground/50'
-            }`}
-            aria-label={`View testimonial ${index + 1}`}
-            data-testid={`button-hero-testimonial-dot-${index}`}
-          />
-        ))}
+        {Array.from({ length: dotsToShow }).map((_, dotIndex) => {
+          const testimonialIndex = dotIndex;
+          const isActive = currentIndex === testimonialIndex || 
+            (currentIndex >= dotsToShow && dotIndex === dotsToShow - 1);
+          return (
+            <button
+              key={dotIndex}
+              onClick={() => setCurrentIndex(testimonialIndex)}
+              className={`rounded-full transition-all duration-300 ${
+                currentIndex === testimonialIndex
+                  ? 'w-6 h-2 bg-primary' 
+                  : 'w-2 h-2 bg-white/50 hover:bg-white/70'
+              }`}
+              aria-label={`View testimonial ${testimonialIndex + 1}`}
+              data-testid={`button-hero-testimonial-dot-${dotIndex}`}
+            />
+          );
+        })}
       </div>
     </div>
   );
@@ -626,13 +635,13 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/50"></div>
         </div>
         
-        {/* Content - Centered Layout */}
+        {/* Content - Two Column Layout */}
         <div className="container relative z-10 px-4 md:px-6 lg:px-8 py-8 md:py-12">
-          <div className="flex flex-col items-center max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center max-w-7xl mx-auto">
             
-            {/* Content - Centered */}
+            {/* Left Column - Text Content */}
             <motion.div 
-              className="space-y-5 md:space-y-6 text-center max-w-4xl"
+              className="space-y-5 md:space-y-6 text-center lg:text-left"
               initial="hidden"
               animate="visible"
               variants={staggerContainer}
@@ -644,15 +653,15 @@ export default function Home() {
                 variants={fadeInUp}
                 data-testid="hero-headline"
               >
-                <span className="whitespace-nowrap">Transform Your Life With</span>
-                <span className="block text-primary mt-1 whitespace-nowrap">
+                <span className="lg:whitespace-nowrap">Transform Your Life With</span>
+                <span className="block text-primary mt-1 lg:whitespace-nowrap">
                   Expert Online Coaching
                 </span>
               </motion.h1>
               
               {/* Subline */}
               <motion.p 
-                className="text-white/90 leading-relaxed font-medium max-w-lg mx-auto" 
+                className="text-white/90 leading-relaxed font-medium max-w-lg mx-auto lg:mx-0" 
                 style={{ fontSize: 'clamp(1rem, 2vw, 1.25rem)' }}
                 variants={fadeInUp}
                 data-testid="hero-subline"
@@ -662,7 +671,7 @@ export default function Home() {
 
               {/* CTAs */}
               <motion.div 
-                className="flex flex-col sm:flex-row gap-3 items-center justify-center pt-2"
+                className="flex flex-col sm:flex-row gap-3 items-center justify-center lg:justify-start pt-2"
                 variants={fadeInUp}
               >
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
@@ -689,21 +698,19 @@ export default function Home() {
               </motion.div>
             </motion.div>
 
-            {/* Transformation Images & Testimonial - Below content, centered (hidden on mobile) */}
+            {/* Right Column - Images and Reviews */}
             <motion.div 
-              className="mt-10 w-full max-w-5xl hidden lg:block hero-visuals"
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
+              className="space-y-4 hero-visuals"
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
               data-testid="hero-visuals-container"
             >
-              <div className="grid grid-cols-2 gap-6 items-start">
-                {/* Transformation Images - Full images with crossfade */}
-                <HeroTransformationSlider />
+              {/* Transformation Images - No background, just images */}
+              <HeroTransformationSlider showDots={false} />
 
-                {/* Featured Testimonial Card - Full display with crossfade */}
-                <HeroTestimonialSlider testimonials={testimonials} />
-              </div>
+              {/* Reviews below images */}
+              <HeroTestimonialSlider testimonials={testimonials} maxDots={5} />
             </motion.div>
           </div>
         </div>
