@@ -691,9 +691,9 @@ export default function Home() {
               </motion.div>
             </motion.div>
 
-            {/* Right Column - Images and Reviews */}
+            {/* Right Column - Images and Reviews - Shifted right */}
             <motion.div 
-              className="space-y-3 hero-visuals"
+              className="space-y-3 hero-visuals lg:ml-12 xl:ml-20"
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
@@ -2842,9 +2842,10 @@ export default function Home() {
 
       {/* Sticky Bottom CTA Bar for Marketing Campaign */}
       <BottomStickyCta
-        originalPrice="₹999"
-        discountedPrice="₹49"
-        ctaText="Book My Spot"
+        originalPrice="₹5000"
+        discountedPrice="₹2500"
+        ctaText="Transform Now"
+        slogan="Commit Online. Conquer Offline."
       />
     </div>
   );

@@ -38,15 +38,20 @@ export function BottomStickyCta({
     >
       <div className="w-full max-w-7xl mx-auto px-4 py-3 md:py-4">
         <div className="flex items-center justify-between gap-4">
-          <div className="flex items-baseline gap-2">
-            <span
-              className="text-2xl md:text-3xl font-extrabold text-foreground"
-              data-testid="text-sticky-price"
-            >
-              {discountedPrice}
-            </span>
-            <span className="text-sm md:text-base text-muted-foreground line-through">
-              {originalPrice}
+          <div className="flex flex-col">
+            <div className="flex items-baseline gap-2">
+              <span
+                className="text-2xl md:text-3xl font-extrabold text-foreground"
+                data-testid="text-sticky-price"
+              >
+                {discountedPrice}
+              </span>
+              <span className="text-sm md:text-base text-muted-foreground line-through">
+                {originalPrice}
+              </span>
+            </div>
+            <span className="text-xs font-bold text-red-500 uppercase tracking-wide" data-testid="text-limited-offer">
+              Limited Time Offer!
             </span>
           </div>
 
