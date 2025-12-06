@@ -630,7 +630,7 @@ export default function Home() {
         
         {/* Content - Two Column Layout */}
         <div className="container relative z-10 px-4 md:px-6 lg:px-12 xl:px-16 py-8 md:py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 xl:gap-16 items-center w-full max-w-[1400px] mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-6 lg:gap-12 xl:gap-20 items-center w-full max-w-[1400px] mx-auto">
             
             {/* Left Column - Text Content */}
             <motion.div 
@@ -691,9 +691,9 @@ export default function Home() {
               </motion.div>
             </motion.div>
 
-            {/* Right Column - Images and Reviews - Shifted right */}
+            {/* Right Column - Images and Reviews */}
             <motion.div 
-              className="space-y-3 hero-visuals lg:ml-20 xl:ml-32"
+              className="space-y-3 hero-visuals lg:w-[380px] xl:w-[420px]"
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
